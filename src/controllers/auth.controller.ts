@@ -32,7 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const password_hash = await hashPassword(password);
 
-    const newUser: NewUser = { email, password_hash };
+    const newUser: NewUser = { email, password_hash, role: 'USER' };
 
     const [result] = await pool.query('INSERT INTO users SET ?', [newUser]);
     
@@ -47,6 +47,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const payload: UserPayload = {
       id: insertId,
       email: email,
+      role: 'USER'
     };
 
     const token = signToken(payload);
@@ -94,6 +95,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const payload: UserPayload = {
       id: user.id,
       email: user.email,
+      role: user.role,
     };
 
     const token = signToken(payload);

@@ -6,7 +6,7 @@ import {
   updateProduct,
   deleteProduct,
 } from '../controllers/product.controller';
-import { protect } from '../middleware/auth.middleware';
+import { isAdmin, protect } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -129,7 +129,7 @@ const router = Router();
  */
 router.route('/')
   .get(getAllProducts)
-  .post(protect, createProduct);
+  .post(protect, isAdmin, createProduct);
 
 /**
  * @swagger
@@ -218,7 +218,7 @@ router.route('/')
  */
 router.route('/:id')
   .get(getProductById)
-  .put(protect, updateProduct)
-  .delete(protect, deleteProduct);
+.put(protect, isAdmin, updateProduct)
+  .delete(protect, isAdmin, deleteProduct);
 
 export default router;

@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import authRoutes from './routes/auth.routes';
 import productRoutes from './routes/product.routes'; 
+import userRoutes from './routes/user.routes';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.get('/api', (req: Request, res: Response) => {
 // --- Use our API routes ---
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes); 
+app.use('/api/users', userRoutes);
 
 // Start the server
 app.listen(PORT, async () => {
