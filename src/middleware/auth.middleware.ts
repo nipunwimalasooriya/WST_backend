@@ -5,9 +5,6 @@ import logger from '../config/logger';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-// This is a key TypeScript step!
-// We are "extending" the global Express Request type to include 
-// an optional 'user' property, so TypeScript won't complain later.
 declare global {
   namespace Express {
     interface Request {
@@ -35,7 +32,7 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
       req.user = decoded;
       
       logger.debug(`User authenticated: ${decoded.email} (ID: ${decoded.id})`);
-      next(); // Success! Move to the next function (the controller)
+      next();
     } catch (error) {
       logger.warn('Token verification failed', error);
       return res.status(401).json({ message: 'Not authorized, token failed' });

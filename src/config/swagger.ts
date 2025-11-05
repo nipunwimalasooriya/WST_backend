@@ -3,7 +3,6 @@ import logger from './logger';
 
 const port = process.env.PORT || 4000;
 
-// 1. Declare the variable at the top level
 let swaggerSpec: object;
 
 const options: swaggerJSDoc.Options = {
@@ -55,7 +54,6 @@ const options: swaggerJSDoc.Options = {
 };
 
 try {
-  // 2. Assign the value inside the try block
   swaggerSpec = swaggerJSDoc(options);
   logger.info('Swagger JSDoc spec generated successfully.');
 
@@ -64,5 +62,4 @@ try {
   process.exit(1);
 }
 
-// 3. Export the variable at the top level
 export default swaggerSpec;

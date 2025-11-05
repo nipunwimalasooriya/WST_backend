@@ -4,14 +4,10 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import logger, { morganStream } from './config/logger';
 import { testConnection } from './db/mysql';
-
-// --- Import Swagger ---
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
-
-// --- Import our routes ---
 import authRoutes from './routes/auth.routes';
-import productRoutes from './routes/product.routes'; // <-- 1. IMPORT PRODUCT ROUTES
+import productRoutes from './routes/product.routes'; 
 
 dotenv.config();
 
@@ -35,7 +31,7 @@ app.get('/api', (req: Request, res: Response) => {
 
 // --- Use our API routes ---
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes); // <-- 2. USE PRODUCT ROUTES
+app.use('/api/products', productRoutes); 
 
 // Start the server
 app.listen(PORT, async () => {
