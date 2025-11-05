@@ -1,0 +1,49 @@
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { UserPayload } from '../types';
+import logger from '../config/logger';
+
+const JWT_SECRET = process.env.JWT_SECRET!;
+
+// This is a key TypeScript step!
+// We are "extending" the global Express Request type to include 
+// an optional 'user' property, so TypeScript won't complain later.
+declare global {
+  namespace Express {
+    interface Request {
+      user?: UserPayload;
+    }
+  }
+}
+
+/**
+ * Middleware to verify JWT and attach user payload to request.
+ */
+export const protect = (req: Request, res: Response, next: NextFunction) => {
+  let token;
+  const authHeader = req.headers.authorization;
+
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      // Get token from header (e.g., "Bearer <token>")
+      token = authHeader.split(' ')[1];
+
+      // Verify token
+      const decoded = jwt.verify(token, JWT_SECRET) as UserPayload;
+
+      // Attach user to the request object
+      req.user = decoded;
+      
+      logger.debug(`User authenticated: ${decoded.email} (ID: ${decoded.id})`);
+      next(); // Success! Move to the next function (the controller)
+    } catch (error) {
+      logger.warn('Token verification failed', error);
+      return res.status(401).json({ message: 'Not authorized, token failed' });
+    }
+  }
+
+  if (!token) {
+    logger.warn('Access attempt with no token');
+    return res.status(401).json({ message: 'Not authorized, no token' });
+  }
+};
