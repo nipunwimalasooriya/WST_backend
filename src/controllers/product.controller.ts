@@ -4,7 +4,7 @@ import pool from '../db/mysql';
 import { Product, NewProduct } from '../types';
 import logger from '../config/logger';
 
-// --- getAllProducts and getProductById (No changes) ---
+// --- getAllProducts and getProductById ---
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const [products] = await pool.query<Product[] & RowDataPacket[]>(

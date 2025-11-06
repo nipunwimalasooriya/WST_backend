@@ -11,7 +11,6 @@ import logger from '../config/logger';
  */
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    // Select all fields *except* the password hash
     const [users] = await pool.query<User[] & RowDataPacket[]>(
       'SELECT id, email, role, created_at FROM users'
     );
@@ -35,7 +34,6 @@ export const updateUserRole = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid role specified' });
   }
 
-  // Prevent an admin from accidentally demoting themselves
   if (Number(id) === req.user?.id) {
      logger.warn(`Admin ${req.user?.email} attempted to change their own role.`);
      return res.status(400).json({ message: 'Admins cannot change their own role.' });

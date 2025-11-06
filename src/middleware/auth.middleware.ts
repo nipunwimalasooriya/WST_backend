@@ -13,16 +13,13 @@ declare global {
   }
 }
 
-/**
- * Middleware to verify JWT and attach user payload to request.
- */
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   let token;
   const authHeader = req.headers.authorization;
 
   if (authHeader && authHeader.startsWith('Bearer ')) {
     try {
-      // Get token from header (e.g., "Bearer <token>")
+      // Get token from header
       token = authHeader.split(' ')[1];
 
       // Verify token

@@ -21,11 +21,9 @@ const pool = mysql.createPool({
 export const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
-    // Use logger.info instead of console.log
     logger.info('Successfully connected to the database.');
     connection.release();
   } catch (error) {
-    // Use logger.error instead of console.error
     logger.error('Error connecting to the database:', error);
     throw error;
   }
